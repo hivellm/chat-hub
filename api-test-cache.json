@@ -1,26 +1,20 @@
 {
-  "timestamp": 1757520656224,
+  "timestamp": 1758152275030,
   "workingProviders": [
     "openai",
     "anthropic",
     "gemini",
-    "xai",
-    "deepseek"
+    "xai"
   ],
   "failedProviders": [
     {
-      "provider": "gemini",
-      "model": "gemini/gemini-2.0-flash",
+      "provider": "openai",
+      "model": "openai/gpt-4o",
       "reason": "⏰ A resposta do aider demorou muito. Tente novamente."
     },
     {
       "provider": "gemini",
       "model": "gemini/gemini-2.5-flash-lite",
-      "reason": "⏰ A resposta do aider demorou muito. Tente novamente."
-    },
-    {
-      "provider": "gemini",
-      "model": "gemini/gemini-1.5-flash",
       "reason": "⏰ A resposta do aider demorou muito. Tente novamente."
     },
     {
@@ -34,83 +28,76 @@
       "reason": "⏰ A resposta do aider demorou muito. Tente novamente."
     },
     {
-      "provider": "xai",
-      "model": "xai/grok-code-fast-1",
-      "reason": "⏰ A resposta do aider demorou muito. Tente novamente."
+      "provider": "deepseek",
+      "model": "deepseek/deepseek-chat",
+      "reason": "Aider v0.86.1\nModel: deepseek/deepseek-chat with diff edit format, prompt cache, infinite \noutput\nGit repo: .git with 17 files\nRepo-map: using 4096 tokens, auto refresh\n\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/LOGGING_README.md\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/MODEL_IDENTITY_GUIDELINES.md\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/README-MONITOR.md\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/fix-issues.js\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/start-monitor.sh\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/start-server.sh\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/stop-server.sh\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/test-all-models.js\nHas it been deleted from the file system but not from git?\nBased on your request to respond only with 'OK' to confirm the API is working, I\nneed to find where API responses are handled. The most likely files to need \nchanges are:\n\n1. `server.js` - This seems to contain the main server logic and API handling\n2. `handshake-response.js` - This might handle specific response formatting\n\nPlease add these files to the chat so I can make the necessary changes.\n\nTokens: 9.3k sent, 87 received. Cost: $0.0026 message, $0.0026 session.\n\nhandshake-response.js\n\nserver.js\nI understand. You want to ensure that when the API is tested, it responds with \nexactly 'OK' to confirm it's working. Let me analyze the code to find where this\nneeds to be implemented.\n\nLooking at the code, I can see that in `server.js`, there's a function \n`testApiConnectivity()` which sends a test prompt to models. The test prompt is:\n```javascript\nconst testPrompt = \"Responda apenas 'OK' para confirmar que a API está \nfuncionando.\";\n```\n\nHowever, the response validation seems to be checking if the response includes \n'OK' (case-insensitive), but it's not ensuring the response is exactly 'OK'. \nLet's fix this.\n\nHere are the necessary changes:\n\nserver.js\n```javascript\n<<<<<<< SEARCH\n                if (response && !response.includes('❌') && \nresponse.toLowerCase().includes('ok')) {\n                    console.log(`[API TEST] ✅ ${testModel.modelId} - WORKING`);\n=======\n                if (response && !response.includes('❌') && \nresponse.trim().toLowerCase() === 'ok') {\n                    console.log(`[API TEST] ✅ ${testModel.modelId} - WORKING`);\n>>>>>>> REPLACE\n```\n\nThis change ensures that the response must be exactly 'OK' (case-insensitive and\ntrimmed) to be considered a successful test.\n\nHowever, I also need to check if there are other places where this validation \nmight be needed. Let me also look at the handshake response:\n\nhandshake-response.js\n```javascript\n<<<<<<< SEARCH\nfunction confirmHandshake() {\n    return \"Olá! Eu sou o modelo openai/gpt-4o-mini. Recebi sua mensagem com \nsucesso.\";\n}\n\nmodule.exports = confirmHandshake; // Export the function for use in server.js\n=======\nfunction confirmHandshake() {\n    return \"OK\";\n}\n\nmodule.exports = confirmHandshake; // Export the function for use in server.js\n>>>>>>> REPLACE\n```\n\nThis change makes the handshake response always return 'OK' to confirm the API \nis working.\n\nNow, let's also check if there are any other places where the handshake response\nis used in server.js. I need to make sure all test responses are properly \nvalidated to be exactly 'OK'.\n\nWait, I need to find where `confirmHandshake` is used in server.js. Let me \nsearch for it:\n\nActually, I don't see `confirmHandshake` being used in the provided server.js \ncode. It seems like it might be used elsewhere, or it's a standalone function. \nSince you want all API tests to respond with 'OK', the first change to the test \nvalidation should be sufficient.\n\nHowever, to be thorough, let's also ensure that when the handshake endpoint is \ncalled directly, it also responds with 'OK'. Let me check if there's a handshake\nendpoint in server.js:\n\nI don't see a specific handshake endpoint in the provided server.js code. The \nhandshake-response.js file might be used elsewhere. Since you've asked to \nrespond with 'OK' to confirm the API is working, and the main testing happens in\nthe API connectivity test, the first change should handle that.\n\nLet's run these changes and see if they work as expected.\n\nTokens: 40k sent, 2.5k cache hit, 671 received. Cost: $0.01 message, $0.01 \nsession.\nDid not apply edit to server.js (--dry-run)\nDid not apply edit to handshake-response.js (--dry-run)"
+    },
+    {
+      "provider": "deepseek",
+      "model": "deepseek/deepseek-coder",
+      "reason": "Aider v0.86.1\nModel: deepseek/deepseek-coder with diff edit format, prompt cache, infinite \noutput\nGit repo: .git with 17 files\nRepo-map: using 4096 tokens, auto refresh\n\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/LOGGING_README.md\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/MODEL_IDENTITY_GUIDELINES.md\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/README-MONITOR.md\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/fix-issues.js\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/start-monitor.sh\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/start-server.sh\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/stop-server.sh\nHas it been deleted from the file system but not from git?\nRepo-map can't include /mnt/f/Node/hivellm/chat-hub/test-all-models.js\nHas it been deleted from the file system but not from git?\nBased on your request to respond only with 'OK' to confirm the API is working, I\nneed to find where API responses are handled. The most likely files that need \nchanges are:\n\n1. `server.js` - This seems to contain the main server logic and API handling\n2. `handshake-response.js` - This might handle specific response formatting\n\nPlease add these files to the chat so I can make the necessary changes.\n\nTokens: 9.3k sent, 9.2k cache hit, 87 received. Cost: $0.00076 message, $0.00076\nsession.\n\nhandshake-response.js\n\nserver.js\nI understand. You want the API to respond with just 'OK' when it receives a test\nrequest to confirm it's working. Let me analyze the files to find where this \nneeds to be implemented.\n\nLooking at the code, I can see that API testing is handled in the \n`testApiConnectivity()` function in `server.js`. This function sends a test \nprompt to each model and expects a response containing 'OK' to confirm the API \nis working.\n\nHowever, the test prompt is currently in Portuguese: \"Responda apenas 'OK' para \nconfirmar que a API está funcionando.\" which translates to \"Respond only 'OK' to\nconfirm that the API is working.\"\n\nSince you want the response to be exactly 'OK', I need to modify the validation \nlogic to check for an exact match or a case-insensitive match.\n\nHere are the necessary changes:\n\nserver.js\n```javascript\n<<<<<<< SEARCH\n                if (response && !response.includes('❌') && \nresponse.toLowerCase().includes('ok')) {\n                    console.log(`[API TEST] ✅ ${testModel.modelId} - WORKING`);\n=======\n                if (response && !response.includes('❌') && \nresponse.trim().toLowerCase() === 'ok') {\n                    console.log(`[API TEST] ✅ ${testModel.modelId} - WORKING`);\n>>>>>>> REPLACE\n```\n\nThis change ensures that only responses that are exactly 'OK' (case-insensitive)\nare considered valid, rather than just containing 'ok' somewhere in the \nresponse.\n\nHowever, this might be too strict. Let me also check if there are any other \nplaces where API responses are validated. If the models are responding with more\nthan just 'OK', we might need to adjust the test prompt to be more specific.\n\nWait, the test prompt is:\n\"Responda apenas 'OK' para confirmar que a API está funcionando.\"\n\nWhich asks the model to respond only with 'OK'. So if the models are following \ninstructions correctly, they should respond with just 'OK'. If they're not, we \nneed to make sure they do.\n\nSince this is a test to confirm the API is working, and you want the response to\nbe exactly 'OK', this change should work.\n\nHowever, let's also make sure the handshake response is consistent:\n\nhandshake-response.js\n```javascript\n<<<<<<< SEARCH\nfunction confirmHandshake() {\n    return \"Olá! Eu sou o modelo openai/gpt-4o-mini. Recebi sua mensagem com \nsucesso.\";\n}\n\nmodule.exports = confirmHandshake; // Export the function for use in server.js\n=======\nfunction confirmHandshake() {\n    return \"OK\";\n}\n\nmodule.exports = confirmHandshake; // Export the function for use in server.js\n>>>>>>> REPLACE\n```\n\nThis changes the handshake response to just 'OK' as well.\n\nNow, to test if the API is working, you can run:\n\n```bash\ncurl -X POST http://localhost:3000/api/model \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model_id\": \"openai/gpt-4o-mini\", \"prompt\": \"Responda apenas \\\"OK\\\" para \nconfirmar que a API está funcionando.\"}'\n```\n\nThis should return a response containing 'OK' if everything is working \ncorrectly.\n\nTokens: 40k sent, 40k cache hit, 685 received. Cost: $0.0036 message, $0.0044 \nsession.\nDid not apply edit to server.js (--dry-run)\nDid not apply edit to handshake-response.js (--dry-run)\n\ncurl -X POST http://localhost:3000/api/model \\                                  \n  -H \"Content-Type: application/json\" \\                                         \n  -d '{\"model_id\": \"openai/gpt-4o-mini\", \"prompt\": \"Responda apenas \\\"OK\\\" para \nconfirmar que a API está funcionando.\"}'"
     }
   ],
   "costReports": [
     {
       "provider": "openai",
-      "model": "openai/gpt-4o",
-      "hasCostData": true,
-      "inputTokens": 9700,
-      "outputTokens": 55,
-      "inputCost": 0.02,
-      "outputCost": 0,
-      "totalCost": 0.02,
-      "currency": "USD",
-      "testTimestamp": "2025-09-10T15:59:00.998Z"
-    },
-    {
-      "provider": "openai",
       "model": "openai/gpt-4o-mini",
       "hasCostData": true,
-      "inputTokens": 8000,
+      "inputTokens": 7800,
       "outputTokens": 1,
       "inputCost": 0.0012,
       "outputCost": 0,
       "totalCost": 0.0012,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T15:59:05.760Z"
+      "testTimestamp": "2025-09-17T23:29:50.596Z"
     },
     {
       "provider": "openai",
       "model": "openai/o1-mini",
       "hasCostData": true,
-      "inputTokens": 8800,
-      "outputTokens": 269,
+      "inputTokens": 8600,
+      "outputTokens": 525,
       "inputCost": 0.03,
       "outputCost": 0,
       "totalCost": 0.03,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T15:59:15.587Z"
+      "testTimestamp": "2025-09-17T23:29:58.000Z"
     },
     {
       "provider": "openai",
       "model": "openai/gpt-4-turbo",
       "hasCostData": true,
-      "inputTokens": 8500,
+      "inputTokens": 8400,
       "outputTokens": 2,
-      "inputCost": 0.09,
+      "inputCost": 0.08,
       "outputCost": 0,
-      "totalCost": 0.09,
+      "totalCost": 0.08,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T15:59:35.926Z"
+      "testTimestamp": "2025-09-17T23:30:03.773Z"
     },
     {
       "provider": "openai",
       "model": "openai/gpt-5-mini",
       "hasCostData": true,
-      "inputTokens": 9600,
-      "outputTokens": 650,
-      "inputCost": 0.0037,
+      "inputTokens": 9500,
+      "outputTokens": 266,
+      "inputCost": 0.0029,
       "outputCost": 0,
-      "totalCost": 0.0037,
+      "totalCost": 0.0029,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:00:21.258Z"
+      "testTimestamp": "2025-09-17T23:30:12.762Z"
     },
     {
       "provider": "openai",
       "model": "openai/gpt-5-nano",
       "hasCostData": true,
-      "inputTokens": 9600,
-      "outputTokens": 266,
-      "inputCost": 0.00059,
+      "inputTokens": 9500,
+      "outputTokens": 1500,
+      "inputCost": 0.0011,
       "outputCost": 0,
-      "totalCost": 0.00059,
+      "totalCost": 0.0011,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:00:28.837Z"
+      "testTimestamp": "2025-09-17T23:30:30.359Z"
     },
     {
       "provider": "anthropic",
@@ -122,7 +109,7 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:00:32.889Z"
+      "testTimestamp": "2025-09-17T23:30:33.784Z"
     },
     {
       "provider": "anthropic",
@@ -134,7 +121,7 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:01:06.723Z"
+      "testTimestamp": "2025-09-17T23:30:40.449Z"
     },
     {
       "provider": "anthropic",
@@ -146,7 +133,7 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:01:10.914Z"
+      "testTimestamp": "2025-09-17T23:30:43.711Z"
     },
     {
       "provider": "anthropic",
@@ -158,7 +145,7 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:01:15.037Z"
+      "testTimestamp": "2025-09-17T23:30:50.440Z"
     },
     {
       "provider": "anthropic",
@@ -170,7 +157,7 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:01:18.920Z"
+      "testTimestamp": "2025-09-17T23:30:56.147Z"
     },
     {
       "provider": "anthropic",
@@ -182,7 +169,7 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:01:22.745Z"
+      "testTimestamp": "2025-09-17T23:31:04.909Z"
     },
     {
       "provider": "anthropic",
@@ -194,133 +181,145 @@
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:01:26.637Z"
+      "testTimestamp": "2025-09-17T23:31:08.241Z"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini/gemini-2.0-flash",
+      "hasCostData": true,
+      "inputTokens": 10000,
+      "outputTokens": 39,
+      "inputCost": 0.001,
+      "outputCost": 0,
+      "totalCost": 0.001,
+      "currency": "USD",
+      "testTimestamp": "2025-09-17T23:31:18.112Z"
     },
     {
       "provider": "gemini",
       "model": "gemini/gemini-2.5-flash",
       "hasCostData": true,
-      "inputTokens": 11000,
-      "outputTokens": 136,
-      "inputCost": 0.0036,
+      "inputTokens": 10000,
+      "outputTokens": 31,
+      "inputCost": 0.0032,
       "outputCost": 0,
-      "totalCost": 0.0036,
+      "totalCost": 0.0032,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:02:52.625Z"
+      "testTimestamp": "2025-09-17T23:31:27.857Z"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini/gemini-1.5-flash",
+      "hasCostData": true,
+      "inputTokens": 7800,
+      "outputTokens": 2,
+      "inputCost": 0.00058,
+      "outputCost": 0,
+      "totalCost": 0.00058,
+      "currency": "USD",
+      "testTimestamp": "2025-09-17T23:32:33.752Z"
     },
     {
       "provider": "gemini",
       "model": "gemini/gemini-1.5-flash-8b",
       "hasCostData": true,
-      "inputTokens": 8700,
+      "inputTokens": 7800,
       "outputTokens": 2,
       "inputCost": null,
       "outputCost": null,
       "totalCost": null,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:04:59.376Z"
+      "testTimestamp": "2025-09-17T23:32:38.347Z"
     },
     {
       "provider": "xai",
       "model": "xai/grok-3-mini",
       "hasCostData": true,
-      "inputTokens": 7900,
+      "inputTokens": 7100,
       "outputTokens": 1,
-      "inputCost": 0.0024,
+      "inputCost": 0.0021,
       "outputCost": 0,
-      "totalCost": 0.0024,
+      "totalCost": 0.0021,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:07:14.356Z"
+      "testTimestamp": "2025-09-17T23:34:48.813Z"
+    },
+    {
+      "provider": "xai",
+      "model": "xai/grok-code-fast-1",
+      "hasCostData": true,
+      "inputTokens": 7300,
+      "outputTokens": 1,
+      "inputCost": 0.0015,
+      "outputCost": 0,
+      "totalCost": 0.0015,
+      "currency": "USD",
+      "testTimestamp": "2025-09-17T23:34:57.508Z"
     },
     {
       "provider": "xai",
       "model": "xai/grok-3",
       "hasCostData": true,
-      "inputTokens": 7900,
+      "inputTokens": 7100,
       "outputTokens": 1,
       "inputCost": 0.02,
       "outputCost": 0,
       "totalCost": 0.02,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:08:23.228Z"
+      "testTimestamp": "2025-09-17T23:35:02.498Z"
     },
     {
       "provider": "xai",
       "model": "xai/grok-3-fast-beta",
       "hasCostData": true,
-      "inputTokens": 9600,
+      "inputTokens": 8800,
       "outputTokens": 1,
-      "inputCost": 0.05,
+      "inputCost": 0.03,
       "outputCost": 0,
-      "totalCost": 0.05,
+      "totalCost": 0.03,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:08:28.831Z"
+      "testTimestamp": "2025-09-17T23:35:07.185Z"
     },
     {
       "provider": "xai",
       "model": "xai/grok-4",
       "hasCostData": true,
-      "inputTokens": 10000,
-      "outputTokens": 13,
+      "inputTokens": 9400,
+      "outputTokens": 1,
       "inputCost": 0.03,
       "outputCost": 0,
       "totalCost": 0.03,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:09:19.468Z"
+      "testTimestamp": "2025-09-17T23:35:54.188Z"
     },
     {
       "provider": "xai",
       "model": "xai/grok-3-fast-latest",
       "hasCostData": true,
-      "inputTokens": 7900,
-      "outputTokens": 1,
-      "inputCost": 0.04,
-      "outputCost": 0,
-      "totalCost": 0.04,
-      "currency": "USD",
-      "testTimestamp": "2025-09-10T16:09:24.809Z"
-    },
-    {
-      "provider": "xai",
-      "model": "xai/grok-2",
-      "hasCostData": true,
-      "inputTokens": 8000,
+      "inputTokens": 7100,
       "outputTokens": 1,
       "inputCost": 0.02,
       "outputCost": 0,
       "totalCost": 0.02,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:09:29.475Z"
+      "testTimestamp": "2025-09-17T23:36:05.321Z"
     },
     {
-      "provider": "deepseek",
-      "model": "deepseek/deepseek-chat",
+      "provider": "xai",
+      "model": "xai/grok-2",
       "hasCostData": true,
-      "inputTokens": 10000,
-      "outputTokens": 147,
-      "inputCost": 0.00088,
+      "inputTokens": 7200,
+      "outputTokens": 1,
+      "inputCost": 0.01,
       "outputCost": 0,
-      "totalCost": 0.00088,
+      "totalCost": 0.01,
       "currency": "USD",
-      "testTimestamp": "2025-09-10T16:10:17.519Z"
-    },
-    {
-      "provider": "deepseek",
-      "model": "deepseek/deepseek-coder",
-      "hasCostData": true,
-      "inputTokens": 10000,
-      "outputTokens": 146,
-      "inputCost": 0.00088,
-      "outputCost": 0,
-      "totalCost": 0.00088,
-      "currency": "USD",
-      "testTimestamp": "2025-09-10T16:10:55.722Z"
+      "testTimestamp": "2025-09-17T23:36:08.983Z"
     }
   ],
-  "lastTest": "2025-09-10T16:10:56.224Z",
+  "lastTest": "2025-09-17T23:37:55.030Z",
   "summary": {
-    "totalProviders": 11,
-    "workingProvidersCount": 5,
+    "totalProviders": 10,
+    "workingProvidersCount": 4,
     "failedProvidersCount": 6,
     "modelsWithCostData": 16,
     "totalCostReports": 23

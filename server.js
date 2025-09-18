@@ -78,7 +78,7 @@ logInfo('STARTUP', 'BIP-05 Monitor Server starting...', {
 
 // Load environment variables from .env file
 function loadEnvironment() {
-    const envPath = path.join(__dirname, '..', '..', '..', '..', '.env');
+    const envPath = path.join(__dirname, '.env');
     const envExists = fs.existsSync(envPath);
 
     console.log(`[ENV] Checking for .env file at: ${envPath}`);
@@ -1270,7 +1270,7 @@ const app = express();
 const server = http.createServer(app);
 
 // Paths
-const issuesFile = path.join(__dirname, '..', 'issues.json');
+const issuesFile = path.join(__dirname, 'issues.json');
 const bipFile = path.join(__dirname, '..', 'BIP-05-054-universal-matrix-protocol.md');
 const implementationFile = path.join(__dirname, '..', 'implementation-plan.md');
 const inventoryFile = path.join(__dirname, '..', '..', '..', '..', 'scripts', 'mcp', 'cursor_model_inventory.yml');

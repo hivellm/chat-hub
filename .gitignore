@@ -93,3 +93,18 @@ test-results/
 coverage/
 *.profraw
 *.profdata
+package-lock.json
+
+# Aider
+.aider.tags.cache.v4
+.aider.chat.history.md
+.aider.input.history
+
+# Issues
+issues.json
+
+# Implementation plan
+implementation-plan.md
+
+# BIP-05
+BIP-05-054-universal-matrix-protocol.md

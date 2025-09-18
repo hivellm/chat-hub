@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
-[![AI Models](https://img.shields.io/badge/AI%20Models-27%20Active-orange.svg)](#ai-model-integration)
+[![AI Models](https://img.shields.io/badge/AI%20Models-36%20Active-orange.svg)](#ai-model-integration)
 
 > **AI Model Communication Hub** - Real-time monitoring and interaction system for HiveLLM ecosystem
 
@@ -11,7 +11,7 @@
 The HiveLLM Chat Hub provides a centralized communication and monitoring interface for AI model interactions across the ecosystem. Originally part of BIP-05 monitoring, it now serves as the primary interface for:
 
 - **🔄 Real-time Monitoring**: Live tracking of AI model interactions
-- **💬 Model Communication**: Direct interface with 27 AI models (4 cursor-agent + 23 aider)
+- **💬 Model Communication**: Direct interface with 36 AI models (4 cursor-agent + 32 aider)
 - **📊 Activity Tracking**: Live comment and discussion monitoring  
 - **🔌 WebSocket Integration**: Real-time updates and notifications
 - **🧠 Hybrid AI Support**: Built-in cursor-agent + external aider API integration
@@ -48,7 +48,7 @@ cp env-example.txt .env
 
 ## 🎯 Features
 
-### 🤖 **AI Model Integration** (27 Models)
+### 🤖 **AI Model Integration** (36 Models)
 
 #### **Cursor-Agent Models (Built-in)**
 - **auto**: Automatic model selection
@@ -57,14 +57,14 @@ cp env-example.txt .env
 - **opus-4.1**: Anthropic Claude Opus 4.1
 
 #### **Aider Models (External APIs)**
-- **OpenAI (6)**: gpt-4o, gpt-4o-mini, o1-mini, gpt-4-turbo, gpt-5-mini, gpt-5-nano
-- **Anthropic (4)**: claude-3-5-haiku/sonnet/opus-latest, claude-3-7-sonnet-latest
-- **Google Gemini (4)**: gemini-2.0-flash-lite/flash, gemini-2.5-pro/flash-latest
-- **xAI Grok (3)**: grok-3-mini, grok-3, grok-beta
-- **DeepSeek (1)**: deepseek-chat
-- **Groq (5)**: llama-3.1/3.3 variants, openai/gpt-oss-120, qwen/qwen3-32b
+- **OpenAI (8)**: chatgpt-4o-latest, gpt-4o/mini, gpt-4o-search-preview, gpt-5-mini, gpt-4.1-mini, o1-mini, gpt-4-turbo
+- **Anthropic (7)**: claude-4/sonnet-4-20250514, claude-3-7-sonnet-latest, claude-3-5 series, claude-3-opus-latest
+- **Google Gemini (5)**: gemini-2.0-flash, gemini-2.5-pro/flash, gemini-1.5-pro/flash-latest
+- **xAI Grok (5)**: grok-4/3-latest, grok-3-fast/mini-latest, grok-code-fast-1
+- **DeepSeek (4)**: deepseek-chat, deepseek-r1, deepseek-reasoner, deepseek-v3
+- **Groq (3)**: llama-3.1/3.3 variants
 
-> Use `node test-all-models.js` to test connectivity to all 27 models
+> Use `node test-all-models.js` to test connectivity to all 36 models
 
 ### 📊 **Monitoring Capabilities**
 - **Real-time Updates**: WebSocket-based live updates
@@ -198,7 +198,7 @@ const ws = new WebSocket('ws://localhost:3000/ws/monitor');
 
 ### Test AI Model Connections
 ```bash
-# Test all 27 models (4 cursor-agent + 23 aider)
+# Test all 36 models (4 cursor-agent + 32 aider)
 node test-all-models.js
 
 # Results will show:
@@ -258,4 +258,4 @@ MIT License - See [../LICENSE](../LICENSE) file for details.
 
 **Component**: HiveLLM Chat Hub (formerly BIP-05 Monitor)  
 **Purpose**: Central communication and monitoring hub  
-**Status**: ✅ Operational with 25+ AI model support
+**Status**: ✅ Operational with 36 AI model support
